@@ -11,7 +11,6 @@ module.exports = (sequelize, Sequelize) => {
         // DEFINE YOUR MODEL HERE
     });
     //Contact.hasMany(Phone);
-
     return Contact;
 };
 
