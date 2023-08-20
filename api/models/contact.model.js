@@ -11,12 +11,9 @@ module.exports = (sequelize, Sequelize) => {
         // DEFINE YOUR MODEL HERE
     });
     //Contact.hasMany(Phone);
-    Contact.associate = (models) => {
-        Contact.hasMany(models.Phone, {
-            foreignKey: 'contactId', // This is the foreign key in the Phone model
-            as: 'phones' // Alias for the association
-        });
-    };
+
     return Contact;
 };
+
+
 
