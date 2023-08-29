@@ -1,11 +1,22 @@
 import { useState, useEffect } from 'react';  // import useEffect
+import {Contact,ContactList} from './components/Contact';
 import './App.css';
 
 function App() {
+    const [contacts, setContacts] = useState([]);
+
+    useEffect(() => {
+        fetch('http://localhost/api/contacts')
+            .then(response => response.json())
+            .then(data => setContacts(data))
+            .catch((error) => {
+                console.error('Error:', error);
+            });
+    }, []);
 
     return (
-        <div>     
-            <h1>Contactor</h1>
+        <div className='page'>     
+            <Contact heading='Contactor' contacts={contacts} setContacts={setContacts}/>
         </div>
     );
 }

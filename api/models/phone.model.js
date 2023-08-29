@@ -16,4 +16,3 @@ module.exports = (sequelize, Sequelize) => {
     //Phone.belongsTo(Contact);
     return Phone;
 };
-
