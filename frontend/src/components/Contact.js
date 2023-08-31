@@ -2,8 +2,10 @@ import { useState, useEffect } from 'react';
 import PhoneForm from './PhoneForm'; // Import the PhoneForm component
 
 function Contact(props){
-    console.log(props);
-
+    console.log("***************************");
+    console.log(props.id);
+    console.log(props.name);
+    
     const [phones, setPhones] = useState([]);
 
     useEffect(() => {
@@ -11,7 +13,10 @@ function Contact(props){
             .then(response => response.json())
             .then(data => {
                 console.log(data); // Add this line to see the structure of the data
-                setPhones(data);
+                if(Array.isArray(data)) {setPhones(data);}
+                else{//Handle the case where data is not an array
+                console.error('Data is not an arry:', data);
+                }
             })
             .catch((error) => {
                 console.error('Error:', error);
@@ -33,14 +38,31 @@ function Contact(props){
     });
     }
 
+    function onClickPhone(contactId,phoneId) {
+        // Find the phone we want to delete and remove it 
+        fetch(`http://localhost/api/contacts/${contactId}/phones/${phoneId}`, {
+        method: 'DELETE',
+    })
+    .then(() => {
+            // remove it from the state
+            setPhones(phones => phones.filter(phone => phone.id !== phoneId));
+    })
+    .catch((error) => {
+            console.error('Error:', error);
+    });
+    }
+
     return (
         <li>
           {props.name}
           <button type="button" onClick={onClick}>Delete</button>
           <ul>
             {phones.map(phone => (
-              <PhoneForm key={phone.id} id={phone.id} setPhones={setPhones} type={phone.type || "Unknown"}/>
+              <li key={phone.id}>
+                {phone.Number} {phone.type} <button type="button" onClick={() => onClickPhone(props.id,phone.id)}>Delete Phone</button></li>
             ))}
+
+                <PhoneForm contactId = {props.id} setPhones={setPhones} />
           </ul>
         </li>
       );
@@ -67,12 +89,13 @@ function ContactList(props) {
             .then(response => response.json())
             .then(data => {
                 props.setContacts(contacts => [...contacts, data]);
+                setNewContact("");  // Clear the input field
             })
             .catch((error) => {
                 console.error('Error:', error);
             });
 
-        setNewContact("");  // Clear the input field
+        
 	}
 
 	return (
@@ -81,7 +104,7 @@ function ContactList(props) {
 			<input type="text" placeholder="Add a new contact" onChange={onChange} />
 			<button type="button" onClick={onClick}>Create contact</button>
 			<ul>
-				{ props.contacts.map(contact => <Contact setContacts={props.setContacts} id={contact.id} name={contact.name}/>) }
+				{ props.contacts.map(contact => <Contact setContacts={props.setContacts} id={contact.id} name={contact.name} key={contact.id}/>) }
 			</ul>
 		</div>
 	);

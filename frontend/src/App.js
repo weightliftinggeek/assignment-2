@@ -16,7 +16,7 @@ function App() {
 
     return (
         <div className='page'>     
-            <Contact heading='Contactor' contacts={contacts} setContacts={setContacts}/>
+            <ContactList heading='Contactor' contacts={contacts} setContacts={setContacts}/>
         </div>
     );
 }
