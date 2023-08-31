@@ -8,11 +8,8 @@ module.exports = (sequelize, Sequelize) => {
         name:{
             type: Sequelize.STRING
         }
-        // DEFINE YOUR MODEL HERE
     });
-    //Contact.hasMany(Phone);
     return Contact;
 };
-
 
 

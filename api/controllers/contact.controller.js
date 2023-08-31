@@ -77,6 +77,7 @@ exports.update = (req, res) => {
 };
 
 // Delete one contact by id
+/*
 exports.delete = (req, res) => {
     const contactId = req.params.contactId;
 
@@ -99,4 +100,29 @@ exports.delete = (req, res) => {
             message: "Could not delete Task with id=" + contactId
          });
     });
+};
+*/
+exports.delete = (req, res) => {
+    const contactId = req.params.contactId;
+
+    Phones.destroy({ where: { contactId } })
+        .then(() => {
+            return Contacts.destroy({ where: { id: contactId } });
+        })
+        .then(num => {
+            if (num == 1) {
+                res.send({
+                    message: "Contact was deleted successfully!"
+                });
+            } else {
+                res.status(404).send({
+                    message: `Contact with id=${contactId} not found`
+                });
+            }
+        })
+        .catch(err => {
+            res.status(500).send({
+                message: `Error deleting Contact with id=${contactId}`
+            });
+        });
 };
