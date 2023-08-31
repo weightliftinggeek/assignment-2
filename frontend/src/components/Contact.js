@@ -101,7 +101,7 @@ function ContactList(props) {
 	return (
 		<div>
 			<h1>{ props.heading }</h1>
-			<input type="text" placeholder="Add a new contact" onChange={onChange} />
+			<input type="text" placeholder="Add a new contact" onChange={onChange} value={newContact} />
 			<button type="button" onClick={onClick}>Create contact</button>
 			<ul>
 				{ props.contacts.map(contact => <Contact setContacts={props.setContacts} id={contact.id} name={contact.name} key={contact.id}/>) }
