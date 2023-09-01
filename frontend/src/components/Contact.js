@@ -7,6 +7,7 @@ function Contact(props){
     console.log(props.name);
     
     const [phones, setPhones] = useState([]);
+    const [showPhoneDetails, setShowPhoneDetails] = useState(false); // State for showing/hiding phone details
 
     useEffect(() => {
         fetch(`http://localhost/api/contacts/${props.id}/phones`)
@@ -24,8 +25,8 @@ function Contact(props){
     }, []);
     
 
-    function onClick() {
-        // Find the task we want to delete and remove it 
+    function onClickDelete() {
+        // Find the contact we want to delete and remove it 
         fetch(`http://localhost/api/contacts/${props.id}`, {
         method: 'DELETE',
     })
@@ -52,28 +53,39 @@ function Contact(props){
     });
     }
 
+      // Function to toggle showing/hiding phone details
+    function togglePhoneDetails() {
+    setShowPhoneDetails(!showPhoneDetails);
+    }
+
     return (
         <li>
-          {props.name}
-          <button type="button" onClick={onClick}>Delete</button>
-          <ul>
-            {phones.map(phone => (
-              <li key={phone.id}>
-                {phone.Number} {phone.type} <button type="button" onClick={() => onClickPhone(props.id,phone.id)}>Delete Phone</button></li>
-            ))}
-
-                <PhoneForm contactId = {props.id} setPhones={setPhones} />
-          </ul>
+          <span onClick={togglePhoneDetails} style={{ cursor: 'pointer' }}>
+            {props.name}
+          </span>
+          <button type="button" onClick={onClickDelete}>Delete</button>
+          {showPhoneDetails && (
+            <ul>
+              {phones.map((phone) => (
+                <li key={phone.id}>
+                  {phone.Number} {phone.type}{' '}
+                  <button type="button" onClick={() => onClickPhone(props.id, phone.id)}>
+                    Delete Phone
+                  </button>
+                </li>
+              ))}
+              <PhoneForm contactId={props.id} setPhones={setPhones} />
+            </ul>
+          )}
         </li>
       );
-      
-}
-
+    }
 
 function ContactList(props) {
 
     const [newContact, setNewContact] = useState("");
-
+    const [showStats, setShowStats] = useState(false); // State for showing/hiding stats
+    
     function onChange(event) {
 		setNewContact(event.target.value);
 	}
@@ -98,6 +110,11 @@ function ContactList(props) {
         
 	}
 
+    // Function to toggle showing/hiding stats
+    function toggleStats() {
+        setShowStats(!showStats);
+    }
+
 	return (
 		<div>
 			<h1>{ props.heading }</h1>
@@ -106,9 +123,71 @@ function ContactList(props) {
 			<ul>
 				{ props.contacts.map(contact => <Contact setContacts={props.setContacts} id={contact.id} name={contact.name} key={contact.id}/>) }
 			</ul>
+
+            <button type="button" onClick={toggleStats}>
+                {showStats ? 'Hide stats' : 'Show stats'}
+            </button>
+            {showStats && <Stats />} {/* Show stats based on showStats state */}
 		</div>
 	);
 }
 
+function Stats(){
+    const [stats, setStats] = useState({});
+
+    // Function to fetch stats
+    function fetchStats() {
+        fetch('http://localhost/api/stats') 
+          .then((response) => response.json())
+          .then((data) => {
+            setStats(data);
+          })
+          .catch((error) => {
+            console.error('Error fetching stats:', error);
+          });
+    }
+
+    // Fetch stats on component mount
+    useEffect(() => {
+        fetchStats();
+    }, []);
+
+    return (
+        <div>
+            <table>
+                <thead>
+                    <tr>
+                        <th>Statistic</th>
+                        <th>Value</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr>
+                        <td>Total Contacts</td>
+                        <td>{stats.ContactNum}</td>
+                    </tr>
+                    <tr>
+                        <td>Total Phones</td>
+                        <td>{stats.PhoneNum}</td>
+                    </tr>
+                    <tr>
+                        <td>Newest Contact</td>
+                        <td>{stats.newContact}</td>
+                    </tr>
+                    <tr>
+                        <td>Oldest Contact</td>
+                        <td>{stats.oldContact}</td>
+                    </tr>
+                </tbody>
+            </table>
+
+            {/* Add an onClick handler to the refresh button to call fetchStats */}
+            <button type="button" onClick={fetchStats}>
+                Refresh stats
+            </button>
+        </div>
+    );
+
+    }
 
 export { Contact, ContactList };
