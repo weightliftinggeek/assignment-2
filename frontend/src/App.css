@@ -1,0 +1,120 @@
+
+.outter-table {
+    text-align: center; 
+    vertical-align: middle; 
+    margin: 0 auto; 
+    border: 1px solid #130e0e; 
+  }
+
+  .inner-table {
+    text-align: center; 
+    vertical-align: middle; 
+    margin: 0 auto; 
+    width: 50%;
+    border: 1px solid #130e0e; 
+    box-shadow: 5px 5px 20px rgba(207, 198, 198, 0.3);
+  }
+
+  .phone-details-table {
+    text-align: center;
+    background-color: #f2f2f2;
+    font-weight: italic;  
+    width:100%;
+    border: 1px solid #3f2c2c; 
+    border-collapse: collapse;
+    color: black;
+  }
+
+.phone-details-table th,
+.phone-details-table td {
+  border: 1px solid #3f2c2c; 
+  padding: 8px; 
+}
+
+.delete-button,
+.phone-details-table button[type="button"] {
+  background-color: rgb(223, 136, 136);
+  color: white;
+  border: none;
+  padding: 8px 12px;
+  cursor: pointer;
+  border-radius: 4px;
+}
+
+
+/* Add a hover effect for the buttons */
+.delete-button:hover,
+.phone-details-table button[type="button"]:hover {
+  background-color: #ff0000; /* Darker red on hover */
+}
+  .phone-details-container {
+    width: 100%;
+  }
+  
+  .phone-form-table {
+    width: 30%;
+    margin-top: 1px; 
+  }
+
+  .contact-info {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+  }
+  
+  .contact-name {
+    text-align: left;
+  }
+  
+  .contact-name:hover {
+    background-color: whitesmoke;
+    cursor: pointer; }
+
+  .delete-button {
+    text-align: right;
+  }
+
+  .stats{
+    text-align: center; 
+    vertical-align: middle; 
+    margin: 0 auto; 
+    width: 30%;
+    background-color: #f2f2f2;
+    border: 1px solid #3f2c2c; 
+    border-collapse: collapse;
+  }
+
+  .show-stats {
+    text-align: center;
+    display: block; 
+    margin: 0 auto; 
+    background-color: green;
+    color: white;
+  }
+
+  .refresh-stats {
+    text-align: center;
+    display: block; 
+    margin: 0 auto; 
+  }
+
+  .page h1 {
+    text-align: center; 
+  }
+
+  body {
+    background-color: lightpink;
+    margin: 0;
+    padding: 0;
+  }
+
+  .Create-contact{
+    background-color: green;
+    color: white;
+  }
+
+  .Phone-detail-button{
+    background-color: green;
+    color: white;
+  }
+

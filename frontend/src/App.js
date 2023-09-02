@@ -1,5 +1,5 @@
 import { useState, useEffect } from 'react';  // import useEffect
-import {Contact,ContactList} from './components/Contact';
+import {ContactList} from './components/Contact';
 import './App.css';
 
 function App() {
@@ -16,7 +16,7 @@ function App() {
 
     return (
         <div className='page'>     
-            <ContactList heading='Contactor' contacts={contacts} setContacts={setContacts}/>
+            <ContactList heading='Contactor' headingClass='custom-heading' contacts={contacts} setContacts={setContacts}/>
         </div>
     );
 }

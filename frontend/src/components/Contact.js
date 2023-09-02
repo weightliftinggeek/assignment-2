@@ -1,5 +1,6 @@
 import { useState, useEffect } from 'react';
 import PhoneForm from './PhoneForm'; // Import the PhoneForm component
+import '../App.css';
 
 function Contact(props){
     console.log("***************************");
@@ -57,29 +58,69 @@ function Contact(props){
     function togglePhoneDetails() {
     setShowPhoneDetails(!showPhoneDetails);
     }
+    // Function to toggle showing phone details when "Add phone details" button is clicked
+    function togglePhone() {
+        setShowPhoneDetails(true);
+        }
 
     return (
-        <li>
-          <span onClick={togglePhoneDetails} style={{ cursor: 'pointer' }}>
-            {props.name}
-          </span>
-          <button type="button" onClick={onClickDelete}>Delete</button>
-          {showPhoneDetails && (
-            <ul>
-              {phones.map((phone) => (
-                <li key={phone.id}>
-                  {phone.Number} {phone.type}{' '}
-                  <button type="button" onClick={() => onClickPhone(props.id, phone.id)}>
-                    Delete Phone
+        <table className="inner-table">
+          <tbody>
+            <tr>
+              <td>
+                <div className="contact-info" style={{ display: 'flex', alignItems: 'center' }}>
+                  <span onClick={togglePhoneDetails} style={{ cursor: 'pointer' }}className="contact-name">
+                    {props.name}
+                  </span>
+                  <button type="button" onClick={onClickDelete} className="delete-button">
+                    Delete
                   </button>
-                </li>
-              ))}
-              <PhoneForm contactId={props.id} setPhones={setPhones} />
-            </ul>
-          )}
-        </li>
+                </div>
+              </td>
+            </tr>
+            <tr>
+              <td>
+                <PhoneForm contactId={props.id} setPhones={setPhones} togglePhone={togglePhone} />
+              </td>
+            </tr>
+      
+            {showPhoneDetails && (
+              <tr>
+                <td colSpan="1">
+                  <div className="phone-details-container">
+                    <table className="phone-details-table">
+                      <thead>
+                        <tr>
+                          <th>Number</th>
+                          <th>Type</th>
+                          <th>Action</th>
+                        </tr>
+                      </thead>
+                      <tbody>
+                        {phones.map((phone) => (
+                          <tr key={phone.id}>
+                            <td>{phone.Number}</td>
+                            <td>{phone.type}{' '}</td>
+                            <td>
+                              <button
+                                type="button"
+                                onClick={() => onClickPhone(props.id, phone.id)}
+                              >
+                                Delete Phone
+                              </button>
+                            </td>
+                          </tr>
+                        ))}
+                      </tbody>
+                    </table>
+                  </div>
+                </td>
+              </tr>
+            )}
+          </tbody>
+        </table>
       );
-    }
+}
 
 function ContactList(props) {
 
@@ -117,14 +158,21 @@ function ContactList(props) {
 
 	return (
 		<div>
-			<h1>{ props.heading }</h1>
-			<input type="text" placeholder="Add a new contact" onChange={onChange} value={newContact} />
-			<button type="button" onClick={onClick}>Create contact</button>
-			<ul>
-				{ props.contacts.map(contact => <Contact setContacts={props.setContacts} id={contact.id} name={contact.name} key={contact.id}/>) }
-			</ul>
+			<h1 className='heading'>{ props.heading } </h1>
+            <table className="outter-table">
+                <thead>
+                    <tr>
+                        <th> <h2> Contacts </h2></th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr> <td> <input type="text" placeholder="Add a new contact" onChange={onChange} value={newContact} /> </td> </tr>             
+                    <tr><td> <button className='Create-contact' type="button" onClick={onClick}>Create contact</button> </td></tr>            
+			        <tr>{ props.contacts.map(contact => <Contact setContacts={props.setContacts} id={contact.id} name={contact.name} key={contact.id}/>) }</tr>
+                </tbody>
+            </table>
 
-            <button type="button" onClick={toggleStats}>
+            <button type="button" onClick={toggleStats} className='show-stats'>
                 {showStats ? 'Hide stats' : 'Show stats'}
             </button>
             {showStats && <Stats />} {/* Show stats based on showStats state */}
@@ -154,37 +202,44 @@ function Stats(){
 
     return (
         <div>
-            <table>
-                <thead>
-                    <tr>
-                        <th>Statistic</th>
-                        <th>Value</th>
-                    </tr>
-                </thead>
-                <tbody>
-                    <tr>
-                        <td>Total Contacts</td>
-                        <td>{stats.ContactNum}</td>
-                    </tr>
-                    <tr>
-                        <td>Total Phones</td>
-                        <td>{stats.PhoneNum}</td>
-                    </tr>
-                    <tr>
-                        <td>Newest Contact</td>
-                        <td>{stats.newContact}</td>
-                    </tr>
-                    <tr>
-                        <td>Oldest Contact</td>
-                        <td>{stats.oldContact}</td>
-                    </tr>
-                </tbody>
-            </table>
+            <table className='stats'>
+            <tbody>
+                <tr>
+                <td><strong>Total Contacts</strong></td>
+                </tr>
+                <tr>
+                <td>{stats.ContactNum}</td>
+                </tr>
 
-            {/* Add an onClick handler to the refresh button to call fetchStats */}
-            <button type="button" onClick={fetchStats}>
-                Refresh stats
-            </button>
+                <tr>
+                <td><strong>Total Phones</strong></td>
+                </tr>
+                <tr>
+                <td>{stats.PhoneNum}</td>
+                </tr>
+
+                <tr>
+                <td><strong>Newest Contact</strong></td>
+                </tr>
+                <tr>
+                <td>{stats.newContact}</td>
+                </tr>
+
+                <tr>
+                <td><strong>Oldest Contact</strong></td>
+                </tr>
+                <tr>
+                <td>{stats.oldContact}</td>
+                </tr>
+                <tr>
+                <td colSpan="2">
+                    <button type="button" onClick={fetchStats} className='refresh-stats'>
+                    Refresh stats
+                    </button>
+                </td>
+                </tr>
+            </tbody>
+            </table>
         </div>
     );
 
