@@ -159,10 +159,14 @@ function ContactList(props) {
 	return (
 		<div>
 			<h1 className='heading'>{ props.heading } </h1>
+        
             <table className="outter-table">
                 <thead>
                     <tr>
                         <th> <h2> Contacts </h2></th>
+                    </tr>
+                    <tr>
+                        <p className='Intro'>Click a contact to view associated phone numbers</p>
                     </tr>
                 </thead>
                 <tbody>
